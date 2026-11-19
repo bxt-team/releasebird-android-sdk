@@ -1,0 +1,3 @@
+<resources>
+    <string name="releasebird_load_error">This could not be loaded. Please check your connection and try again.</string>
+</resources>

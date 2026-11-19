@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- No application attributes here: a library must not override the host app's settings
+         (a networkSecurityConfig here broke the build of apps that define their own). -->
+    <application>
+
+        <provider
+            android:name=".PingServiceInitializer"
+            android:authorities="${applicationId}.mylibrary.initializer"
+            android:exported="false" />
+
+        <service
+            android:name=".PingService"
+            android:exported="false" />
+
+        <activity
+            android:name="com.releasebird.releasebird_sdk.ImageViewerActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:theme="@style/ReleasebirdTheme.WhiteBG" />
+
+        <activity
+            android:name="com.releasebird.releasebird_sdk.ReleasebirdMainActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:theme="@style/ReleasebirdTheme.TranslucentBG" />
+    </application>
+
+
+</manifest>

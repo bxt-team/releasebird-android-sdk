@@ -1,0 +1,114 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.getBuildFile()
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+println rootProject.subprojects
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral() // NEW
+    }
+    dependencies {
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    }
+}
+
+project.afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                // change URLs to point to your repos, e.g. http://my.org/repo
+                def releasesRepoUrl = layout.buildDirectory.dir('repos/releases')
+                def snapshotsRepoUrl = layout.buildDirectory.dir('repos/snapshots')
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            }
+        }
+        publications {
+
+            library(MavenPublication) {
+                setGroupId 'com.releasebird.androidsdk'
+                setArtifactId 'androidsdk'
+                version '1.0.5'
+                // Aus der Release-Variante: so stehen die Abhängigkeiten des SDK im veröffentlichten POM.
+                // (Bis 1.0.4 wurde nur das AAR veröffentlicht – die App musste die Bibliotheken zufällig selbst mitbringen.)
+                from components.release
+                pom {
+                    name = 'releasebird-android-sdk'
+                    description = 'Releasebird Android SDK'
+                    url = 'https://www.releasebird.com'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'czillmann'
+                            name = 'Christian Zillmann'
+                            email = 'christian.zillmann@buildnext.io'
+                        }
+                    }
+                    scm {
+                        connection = 'https://github.com/bxt-team/releasebird-android-sdk.git'
+                        developerConnection = 'https://github.com/bxt-team/releasebird-android-sdk.git'
+                        url = 'https://www.releasebird.com/'
+                    }
+                }
+            }
+        }
+
+
+    }
+}
+
+android {
+    namespace 'com.releasebird.releasebird_sdk'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 26
+        targetSdk 34
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+signing {
+    sign publishing.publications
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation libs.appcompat
+    implementation libs.material
+    // direkt genutzt (Button-Overlay) – bisher nur zufällig über Material vorhanden
+    implementation libs.constraintlayout
+    testImplementation libs.junit
+    implementation libs.lifecycle.process
+
+}

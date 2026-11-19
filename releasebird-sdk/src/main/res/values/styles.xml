@@ -1,0 +1,23 @@
+<resources>
+    <style name="ReleasebirdTheme.TranslucentBG" parent="Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/releasebird_transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:statusBarColor">@color/releasebird_transparent</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="ReleasebirdTheme.WhiteBG" parent="Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:statusBarColor">@color/releasebird_transparent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+</resources>
