@@ -84,6 +84,8 @@ android {
     publishing {
         singleVariant('release') {
             withSourcesJar()
+            // Maven Central verlangt zusätzlich ein Javadoc-Archiv.
+            withJavadocJar()
         }
     }
     buildTypes {
